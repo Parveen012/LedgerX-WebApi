@@ -1,3 +1,5 @@
+using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,8 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

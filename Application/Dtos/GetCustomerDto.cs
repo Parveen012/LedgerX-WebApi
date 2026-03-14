@@ -1,16 +1,15 @@
-﻿using Domain.Common;
-using System.ComponentModel.DataAnnotations;
+﻿namespace Application.Dtos;
 
-namespace Domain;
-
-public class Customer:BaseEntity
+public class GetCustomerDto
 {
-    [Key]
     public int Id { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
     public string? Notes { get; set; }
+    public bool IsActive { get; set; }
+
+
 
 
 

@@ -1,16 +1,10 @@
-﻿using Domain.Common;
-using Domain.Enum;
-using System.ComponentModel.DataAnnotations;
+﻿using Domain.Enum;
 
-namespace Domain;
+namespace Application.Dtos;
 
-public class User:BaseEntity
+public class CreateUpdateUserDto
 {
-    [Key]
-    public int Id { get; set; }
-
-    public Role Role { get; set; }
-
+    public Role Role {  get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
@@ -22,4 +16,5 @@ public class User:BaseEntity
     public string Country { get; set; }
     public int PinCode { get; set; }
     public string Password { get; set; }
+
 }

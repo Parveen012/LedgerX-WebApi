@@ -1,15 +1,13 @@
-﻿using Domain.Common;
-using Domain.Enum;
-using System.ComponentModel.DataAnnotations;
+﻿
+using System.Data;
 
-namespace Domain;
+namespace Application.Dtos;
 
-public class User:BaseEntity
+public class GetUserDto
 {
-    [Key]
     public int Id { get; set; }
 
-    public Role Role { get; set; }
+    public string Role { get; set; }
 
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -21,5 +19,4 @@ public class User:BaseEntity
     public string State { get; set; }
     public string Country { get; set; }
     public int PinCode { get; set; }
-    public string Password { get; set; }
 }

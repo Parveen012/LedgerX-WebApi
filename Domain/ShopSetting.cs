@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain;
 
-public class ShopSettings:BaseEntity
+public class ShopSetting:BaseEntity
 {
     [Key]
     public int Id { get; set; }

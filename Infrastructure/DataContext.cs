@@ -11,7 +11,7 @@ public class DataContext : DbContext
 
     public DbSet<Customer> Customers { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<ShopSettings> ShopSettings { get; set; }
+    public DbSet<ShopSetting> ShopSettings { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -69,7 +69,7 @@ public class DataContext : DbContext
 
         });
 
-        modelBuilder.Entity<ShopSettings>(entity =>
+        modelBuilder.Entity<ShopSetting>(entity =>
         {
             entity.HasKey(x => x.Id);
 

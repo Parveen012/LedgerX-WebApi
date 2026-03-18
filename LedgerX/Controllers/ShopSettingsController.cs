@@ -1,4 +1,5 @@
 ﻿using Application.Dtos;
+using Application.ShopSettings;
 using Domain;
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -11,51 +12,54 @@ namespace LedgerX.Controllers
     [ApiController]
     public class ShopSettingsController : ControllerBase
     {
-        private readonly DataContext _dataContext;
+        private readonly IShopSettingApplication _shopSettingApplication;
 
-        public ShopSettingsController(DataContext dataContext)
+        public ShopSettingsController(IShopSettingApplication shopSettingApplication)
         {
-            _dataContext = dataContext;
+            _shopSettingApplication = shopSettingApplication;
         }
 
         [HttpPost]
-        public void Create(CreateUpdateShopSettingsDto input)
+        public async Task<ActionResult> AddShopSetting(CreateUpdateShopSettingsDto input)
         {
-            bool isUserExisits = _dataContext.Users.Any(p => p.Id == input.UserId);
-            if (!isUserExisits)
+            try
             {
-                throw new BadHttpRequestException($"User ID {input.UserId} doesn't exists");
+                await _shopSettingApplication.AddShopSetting(input);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
 
             }
-            var shopSettings = new ShopSettings
-            {
-                UserId = input.UserId,
-                Email = input.Email,
-                PhoneNumber= input.PhoneNumber,
-                GstNumber = input.GstNumber,
-                ShopName = input.ShopName,
-                OwnerName = input.OwnerName,
 
-            };
-            _dataContext.Add(shopSettings);
-            _dataContext.SaveChanges();
         }
 
+
         [HttpGet]
-        public List<GetShopSettingsDto> Get()
+        public async Task<List<GetShopSettingsDto>> GetAll()
         {
-            return _dataContext.ShopSettings.Include(x => x.User).Select(x => new GetShopSettingsDto
-            {
-                Id = x.Id,
-                UserId = x.UserId,
-                Email= x.Email,
-                PhoneNumber= x.PhoneNumber,
-                GstNumber= x.GstNumber,
-                OwnerName= x.OwnerName,
-                ShopName=x.ShopName,
-                User=x.User
-               
-            }).ToList();
+            return await _shopSettingApplication.GetAllShopSettings();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<GetShopSettingsDto> GetById(int id)
+        {
+            return await _shopSettingApplication.GetShopSettingById(id);
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
+        {
+            await _shopSettingApplication.DeleteShopSetting(id);
+        }
+
+        [HttpPut("{id}")]
+        public async Task Update(int id, CreateUpdateShopSettingsDto input)
+        {
+            await _shopSettingApplication.UpdateShopSetting(id, input);
+
         }
 
     }

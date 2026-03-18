@@ -1,4 +1,11 @@
+using Application.Common;
+using Application.Customers;
+using Application.ShopSettings;
+using Application.Transactions;
 using Infrastructure;
+using Infrastructure.Repositories.Customers;
+using Infrastructure.Repositories.ShopSettings;
+using Infrastructure.Repositories.Transactions;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +18,16 @@ builder.Services.AddOpenApi();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
+builder.Services.AddTransient<ICustomerApplication, CustomerApplication>();
+builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
+builder.Services.AddTransient<ITransactionApplication, TransactionApplication>();
+builder.Services.AddTransient<IShopSettingRepository,ShopSettingRepository>();
+builder.Services.AddTransient<IShopSettingApplication, ShopSettingApplication>();
+
+builder.Services.AddAutoMapper(typeof(mapping));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

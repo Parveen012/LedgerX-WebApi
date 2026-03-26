@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain;
 using Infrastructure.Repositories.ShopSettings;
+using Infrastructure.Repositories.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,15 +13,23 @@ namespace Application.ShopSettings
     {
         private readonly IShopSettingRepository _shopSettingRepository;
 
+        private readonly IUserRepository _userRepository;
+
         private readonly IMapper _mapper;
-        public ShopSettingApplication(IShopSettingRepository shopSettingRepository, IMapper mapper)
+        public ShopSettingApplication(IShopSettingRepository shopSettingRepository, IMapper mapper, IUserRepository userRepository)
         {
             _shopSettingRepository = shopSettingRepository;
             _mapper = mapper;
+            _userRepository = userRepository;
         }
 
         public async Task AddShopSetting(CreateUpdateShopSettingsDto input)
         {
+            var user = _shopSettingRepository.GetById(input.UserId);
+            if (user == null)
+            {
+                throw new Exception("User id Doesn't Exists");
+            }
             var shopSetting = _mapper.Map<ShopSetting>(input);
             await _shopSettingRepository.Create(shopSetting);
         }
@@ -38,6 +47,7 @@ namespace Application.ShopSettings
         public async Task<List<GetShopSettingsDto>> GetAllShopSettings()
         {
             var shopSettings = await _shopSettingRepository.GetAll();
+        
             return _mapper.Map<List<GetShopSettingsDto>>(shopSettings);
         }
 
@@ -57,6 +67,11 @@ namespace Application.ShopSettings
             if (shopSetting == null)
             {
                 return;
+            }
+            var user = _shopSettingRepository.GetById(input.UserId);
+            if (user == null)
+            {
+                throw new Exception("User id Doesn't Exists");
             }
             _mapper.Map(input, shopSetting);
             await _shopSettingRepository.Update(shopSetting);

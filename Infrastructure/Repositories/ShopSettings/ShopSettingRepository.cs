@@ -29,12 +29,12 @@ public class ShopSettingRepository:IShopSettingRepository
 
     public async Task<List<ShopSetting>> GetAll()
     {
-        return await _datacontext.ShopSettings.ToListAsync();
+        return await _datacontext.ShopSettings.Include(x=>x.User).ToListAsync();
     }
 
     public async Task<ShopSetting> GetById(int id)
     {
-        return await _datacontext.ShopSettings.FindAsync(id);
+        return await _datacontext.ShopSettings.Include(x => x.User).FirstAsync(x => x.Id == id);
     }
 
     public Task Update(ShopSetting shopSettings)

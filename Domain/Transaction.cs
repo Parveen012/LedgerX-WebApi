@@ -17,4 +17,5 @@ public class Transaction:BaseEntity
     public TransactionType TransactionType { get; set; }
     public int Amount { get; set; }
     public string? Description { get; set; }
+    public string CreatedBy { get; set; } 
 }

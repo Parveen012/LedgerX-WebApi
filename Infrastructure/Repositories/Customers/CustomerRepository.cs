@@ -47,4 +47,10 @@ public class CustomerRepository : ICustomerRepository
        return  _datacontext.SaveChangesAsync();
 
     }
+    public Task Block(Customer customer)
+    {
+        customer.IsActive=!customer.IsActive;
+          _datacontext.Customers.Update(customer);
+        return  _datacontext.SaveChangesAsync();
+    }
 }

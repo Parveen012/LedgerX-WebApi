@@ -61,4 +61,13 @@ public class CustomerApplication : ICustomerApplication
         await _customerRepository.Update(customer);
     }
 
+    public async Task Block(int id)
+    {
+        var customer = await _customerRepository.GetById(id);
+        if (customer == null)
+        {
+            return;
+        }
+        await _customerRepository.Block(customer);
+    }
 }

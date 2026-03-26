@@ -12,4 +12,5 @@ public interface ICustomerRepository
     public Task<List<Customer>> GetAll();
     public Task Update(Customer customer);
     public Task Delete(Customer customer);
+    public Task Block(Customer customer);
 }

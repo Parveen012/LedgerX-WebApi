@@ -15,5 +15,5 @@ public class GetShopSettingsDto
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
     public string? GstNumber { get; set; }
-    public User User { get; set; }
+    public GetUserDto User { get; set; }
 }

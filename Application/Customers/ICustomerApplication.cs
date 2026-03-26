@@ -9,4 +9,5 @@ public interface ICustomerApplication
     public Task DeleteCustomer(int id);
     public Task<GetCustomerDto> GetCustomerById(int id);
     public Task<List<GetCustomerDto>> GetAllCustomers();
+    public Task Block(int id);
 }

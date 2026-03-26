@@ -33,12 +33,12 @@ namespace Infrastructure.Repositories.Transactions
 
         public async Task<List<Transaction>> GetAll()
         {
-            return await _datacontext.Transactions.ToListAsync();
+            return await _datacontext.Transactions.Include(x=>x.Customer).ToListAsync();
         }
 
         public async Task<Transaction> GetById(int id)
         {
-            return await _datacontext.Transactions.FindAsync(id);
+            return await _datacontext.Transactions.Include(x=>x.Customer).FirstAsync(x=>x.Id == id);
         }
 
         public Task Update(Transaction transaction)

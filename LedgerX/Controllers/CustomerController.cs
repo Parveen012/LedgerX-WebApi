@@ -63,6 +63,12 @@ public class CustomerController : ControllerBase
 
     }
 
+    [HttpPut("{id}/Block")]
+    public async Task Block(int id)
+    {
+        await _customerApplication.Block(id);
+
+    }
 
 
 }

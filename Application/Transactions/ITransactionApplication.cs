@@ -7,7 +7,7 @@ namespace Application.Transactions
 {
     public interface ITransactionApplication
     {
-        public Task AddTransaction(CreateUpdateTransactionDto input);
+        public Task AddTransaction(CreateUpdateTransactionDto input, string createdBy);
         public Task UpdateTransaction(int id, CreateUpdateTransactionDto input);
         public Task DeleteTransaction(int id);
         public Task<GetTransactionDto> GetTransactionById(int id);

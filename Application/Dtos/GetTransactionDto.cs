@@ -11,5 +11,5 @@ public class GetTransactionDto
     public string? Description { get; set; }
 
     public int CustomerId { get; set; }
-    public Customer? customer { get; set; }
+    public GetCustomerDto customer { get; set; }
 }

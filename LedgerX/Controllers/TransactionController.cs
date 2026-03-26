@@ -2,6 +2,7 @@
 using Application.Transactions;
 using Domain;
 using Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +20,19 @@ namespace LedgerX.Controllers
         {
             _transactionApplication = transactionApplication;
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> AddTransaction(CreateUpdateTransactionDto input)
         {
             try
             {
-                await _transactionApplication.AddTransaction(input);
+                var userIdClaim = User.Claims.FirstOrDefault(x => x.Type == "userId")?.Value;
+               if (userIdClaim == null)
+                {
+                    return Unauthorized();
+                }
+
+                await _transactionApplication.AddTransaction(input, userIdClaim);
                 return Ok();
             }
             catch

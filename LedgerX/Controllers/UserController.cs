@@ -1,4 +1,5 @@
-﻿using Application.Dtos;
+﻿using Application.Users;
+using Application.Dtos;
 using Domain;
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -10,58 +11,57 @@ namespace LedgerX.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly DataContext _dataContext;
+        private readonly IUserApplication _userApplication;
 
-        public UserController(DataContext dataContext)
+        public UserController(IUserApplication userApplication)
         {
-            _dataContext = dataContext;
+            _userApplication = userApplication;
         }
 
+
+
         [HttpPost]
-        public void Create(CreateUpdateUserDto input)
+        public async Task<ActionResult> AddUser(CreateUpdateUserDto input)
         {
-            var user = new User
+            try
             {
-                Role=input.Role,
-                FirstName = input.FirstName,
-                LastName = input.LastName,
-                Email = input.Email,
-                PhoneNumber = input.PhoneNumber,
-                Address1 = input.Address1,
-                Address2 = input.Address2,
-                City = input.City,
-                State = input.State,
-                Country = input.Country,
-                PinCode = input.PinCode,
-                Password = input.Password,
-               
-            };
-            _dataContext.Users.Add(user);
-            _dataContext.SaveChanges();
+                await _userApplication.AddUser(input);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+
+            }
 
 
         }
 
 
         [HttpGet]
-        public List<GetUserDto> Get()
+        public async Task<List<GetUserDto>> GetAll()
         {
-            return _dataContext.Users.Select(x => new GetUserDto
-            {
-                Id = x.Id,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                Email = x.Email,
-                PhoneNumber = x.PhoneNumber,
-                Address1 = x.Address1,
-                Address2 = x.Address2,
-                City = x.City,
-                State = x.State,
-                Country = x.Country,
-                PinCode = x.PinCode,
-                Role=x.Role.ToString(),
-            }).ToList();
+            return await _userApplication.GetAllUsers();
         }
 
+        [HttpGet("{id}")]
+        public async Task<GetUserDto> GetById(int id)
+        {
+            return await _userApplication.GetUserById(id);
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
+        {
+            await _userApplication.DeleteUser(id);
+        }
+
+        [HttpPut("{id}")]
+        public async Task Update(int id, CreateUpdateUserDto input)
+        {
+            await _userApplication.UpdateUser(id, input);
+
+        }
     }
 }
